@@ -11,12 +11,12 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Kopiujemy resztę aplikacji
-COPY . .
+COPY . /app
 
 # Ustawiamy zmienną środowiskową, aby Flask działał w trybie produkcyjnym
 ENV FLASK_APP=main.py
 ENV FLASK_RUN_HOST=0.0.0.0
-ENV FLASK_ENV=production
+ENV FLASK_ENV=development
 ENV PYTHONPATH=/app
 
 
@@ -24,4 +24,4 @@ ENV PYTHONPATH=/app
 EXPOSE 5000
 
 # Komenda uruchamiająca aplikację
-CMD ["flask", "run"]
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
