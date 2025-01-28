@@ -108,7 +108,7 @@ Password: he123avy
 - HTML
 - CSS
 - JavaScript
-- PHP
+- python(FLASK)
 - PostgreSQL
 
 
