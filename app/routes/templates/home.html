@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Anime Tracker - Home</title>
+		<link
+			rel="stylesheet"
+			href="{{ url_for('static', filename='css/home_style.css') }}" />
+	</head>
+
+	<body>
+		<div class="container">
+			<header class="header">
+				<h1>ANIME TRACKER</h1>
+			</header>
+			<main class="main-content">
+				<div class="button-container">
+					<a href="/login" class="button">Log in</a>
+					<a href="/register" class="button">Sign in</a>
+				</div>
+				<br />
+				<br />
+				<div class="button-container">
+					<a href="/loadDB" class="button">Load test DB</a>
+				</div>
+			</main>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Anime Tracker - Register</title>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="public/css/register_style.css" />
+	</head>
+	<body>
+		<div class="container">
+			<!-- Nagłówek strony -->
+			<header class="header">
+				<h1>ANIME TRACKER</h1>
+			</header>
+
+			<!-- Główna treść strony - formularz rejestracji -->
+			<main class="main-content">
+				<form
+					class="register-form"
+					action="/register"
+					method="POST">
+					<h2>Register</h2>
+					<div class="input-group">
+						<label for="name">Nickname</label>
+						<input type="text" id="name" name="name" required />
+					</div>
+					<div class="input-group">
+						<label for="email">Email</label>
+						<input type="email" id="email" name="email" required />
+					</div>
+					<div class="input-group">
+						<label for="password">Password</label>
+						<input type="password" id="password" name="password" required />
+					</div>
+					<div class="input-group">
+						<label for="confirm-password">Confirm Password</label>
+						<input
+							type="password"
+							id="confirm_password"
+							name="confirm_password"
+							required />
+					</div>
+					<button type="submit" class="button">Sign up</button>
+				</form>
+				<?php if (isset($error)): ?>
+				<div class="error"><?= htmlspecialchars($error) ?></div>
+			<?php endif; ?>
+				<a href="home" class="back-arrow"> &larr; Back </a>
+			</main>
+		</div>
+	</body>
+</html>

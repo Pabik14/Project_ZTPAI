@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Tracker - Anime List</title>
+    <link rel="stylesheet" type="text/css" href="public/css/animelist_style.css">   
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="public/js/menu.js" defer></script>
+    <script defer src="public/js/search.js" defer></script>
+
+</head>
+<body>
+   <!-- Pasek nawigacyjny -->
+   <nav class="navbar">
+    <div class="navbar-brand">
+        <button class="burger-menu" id="burger-menu">
+            &#9776;
+        </button>
+    </div>
+    <ul id="nav-links">
+        <li><a href="/dashboard">Stats</a></li>
+        <li><a href="/animelist">Anime list</a></li>
+
+        <li><a><?php if (isset($userName)): ?>
+            <?= htmlspecialchars($userName) ?>
+            <?php endif; ?></a></li>
+        <li>
+            <form action="/logout" method="POST">
+                <button type="submit">Logout</button>
+
+            </form>
+            </li>
+    </ul>
+</nav>
+<div class="container">
+    <!-- Nagłówek strony -->
+    <header class="header">
+        <h1>Your Anime List</h1>
+    </header>
+
+    <!-- Pole wyszukiwania -->
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search anime...">
+        <select id="status-filter">
+            <option value="">All Anime</option>
+            <option value="watching">Watching</option>
+            <option value="watched">Watched</option>
+            <option value="planned">Planned</option>
+            <option value="on hold">On Hold</option>
+            <option value="abandoned">Abandoned</option>
+        </select>
+        <button id="reset-search">Reset</button>
+        
+    </div>
+  
+    <a href="/addAnime">
+    <button class="add-anime-btn" >
+            Add Anime
+        </button>
+    </a>
+
+
+    <!-- Główna treść strony - lista anime -->
+    <main class="main-content">
+        <table class="anime-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Episodes</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody id="anime-table-body">
+                <!-- Iteruj przez każdy element listy anime i wyświetl dane -->
+                <?php if (isset($animeList) && !empty($animeList)): ?>
+                    <?php foreach ($animeList as $anime): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($anime['anime_name']) ?></td>
+                            <td><?= htmlspecialchars($anime['category']) ?></td>
+                            <td><?= htmlspecialchars($anime['type']) ?></td>
+                            <td><?= htmlspecialchars($anime['status']) ?></td>
+                            <td><?= htmlspecialchars($anime['episodes_count']) ?></td>
+                            <td>
+                                <img 
+                                    src="public/img/x.png" 
+                                    alt="Delete" 
+                                    class="delete-anime x-delete" 
+                                    data-anime-id="<?= htmlspecialchars($anime['id']) ?>" 
+                                ></td>
+                            
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <!-- Komunikat, gdy lista anime jest pusta -->
+                    <tr>
+                        <td colspan="6">No anime found in your list.</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </main>
+</div>
+
+
+</body>
+</html>
