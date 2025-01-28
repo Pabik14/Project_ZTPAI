@@ -1,0 +1,149 @@
+/* Resetowanie marginesów i stylów domyślnych */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #2c003e, #900080);
+    padding: 20px;
+}
+
+/* Kontener główny */
+.container {
+    text-align: center;
+    color: #fff;
+}
+
+/* Stylizacja strzałki powrotu */
+.back-arrow {
+    display: inline-block;
+    margin-top: 20px;
+    color: #e066ff;
+    font-size: 18px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.back-arrow:hover {
+    color: #d14eea;
+}
+
+/* Nagłówek strony */
+.header h1 {
+    font-size: 48px;
+    margin-bottom: 60px;
+    font-weight: bold;
+}
+
+/* Główna treść strony */
+.main-content {
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Formularz logowania */
+.login-form {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.login-form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+/* Grupa pól formularza */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #ddd;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Przyciski */
+.button {
+    display: inline-block;
+    padding: 12px 30px;
+    font-size: 18px;
+    color: #fff;
+    background-color: #e066ff;
+    border: none;
+    border-radius: 30px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    margin-top: 20px;
+}
+
+.button:hover {
+    background-color: #d14eea;
+    transform: scale(1.05);
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+    /* Zmniejszenie rozmiaru nagłówka */
+    .header h1 {
+        font-size: 36px;
+        margin-bottom: 40px;
+    }
+
+    /* Formularz logowania */
+    .login-form {
+        padding: 20px;
+    }
+
+    /* Pole formularza */
+    .input-group input {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    /* Dostosowanie przycisków */
+    .button {
+        padding: 10px 25px;
+        font-size: 16px;
+        width: 100%;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Dalsze zmniejszenie rozmiaru nagłówka na bardzo małych ekranach */
+    .header h1 {
+        font-size: 28px;
+    }
+
+    /* Pole formularza */
+    .input-group input {
+        padding: 8px;
+    }
+}

@@ -1,0 +1,171 @@
+/* Resetowanie marginesów i stylów domyślnych */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #2c003e, #900080);
+    padding: 20px;
+    color: #fff;
+}
+
+/* Pasek nawigacyjny */
+.navbar {
+    width: 100%;
+    background-color: #1e1e1e;
+    padding: 15px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar li {
+    display: inline;
+}
+
+.navbar form button {
+    background-color: #e066ff;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.navbar form button:hover {
+    background-color: #d14eea;
+}
+
+.container {
+    text-align: center;
+    color: #fff;
+    max-width: 1200px;
+    width: 100%;
+    margin: 100px auto 0;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Nagłówek strony */
+.header h1 {
+    font-size: 48px;
+    margin-bottom: 40px;
+    font-weight: bold;
+}
+
+/* Główna treść strony */
+.main-content {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Tabela użytkowników */
+table {
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+table th, table td {
+    padding: 15px;
+    text-align: center;
+    color: #fff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+table th {
+    background-color: rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+}
+
+table td img {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+table td img:hover {
+    transform: scale(1.2);
+}
+
+/* Stylizacja przycisku pobierania bazy danych */
+.main-content form button {
+    background-color: #e066ff;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    padding: 10px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.main-content form button:hover {
+    background-color: #d14eea;
+    transform: scale(1.05);
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+    .navbar ul {
+        justify-content: center;
+    }
+
+    .header h1 {
+        font-size: 36px;
+        margin-bottom: 30px;
+    }
+
+    table th, table td {
+        padding: 10px;
+    }
+
+    .main-content form button {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 28px;
+    }
+
+    table th, table td {
+        padding: 8px;
+    }
+
+    .main-content form button {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}

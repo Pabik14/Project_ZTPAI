@@ -1,0 +1,254 @@
+/* Resetowanie marginesów i stylów domyślnych */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #2c003e, #900080);
+    padding: 20px;
+}
+
+/* Pasek nawigacyjny */
+.navbar {
+    width: 100%;
+    background-color: #1e1e1e;
+    padding: 15px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar li {
+    display: inline;
+}
+
+.navbar a {
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 5px;
+}
+
+button{
+    background: none;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+/* Burger menu */
+.burger-menu {
+    display: none;
+    font-size: 24px;
+    color: #fff;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Dodatkowe stylizacje do sticky navbar */
+.navbar-brand {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Dodanie przestrzeni dla sticky navbar */
+.navbar-space {
+    margin-top: 80px;
+}
+
+/* Kontener główny */
+.container {
+    text-align: center;
+    color: #fff;
+    max-width: 1200px;
+    width: 100%;
+    padding-top: 40px;
+}
+
+
+
+/* Kontener główny */
+.container {
+    text-align: center;
+    color: #fff;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Nagłówek strony */
+.header h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* Formularz */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form div {
+    text-align: left;
+}
+.btn-div{
+    text-align: center;
+}
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    color: #ddd;
+}
+
+/* Style pól formularza */
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 16px;
+    color: #333;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease;
+    background-color: #fff;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+    box-shadow: 0px 5px 15px rgba(224, 102, 255, 0.5);
+}
+
+
+
+/* Responsywność */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 28px;
+    }
+
+    form {
+        gap: 12px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+        font-size: 14px;
+        padding: 10px;
+    }
+    .burger-menu {
+        display: block;
+    }
+    .navbar ul {
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+        background-color: #1e1e1e;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+    }
+    .navbar ul.show {
+        display: flex;
+    }
+
+    .burger-menu {
+        display: block;
+    }
+
+    .navbar-space {
+        margin-top: 120px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 24px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+
+}
+/* Stylizacja przycisku */
+.add-anime-btn {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #e066ff; /* Jasny fiolet, podobny do przesłanego */
+    border: none;
+    border-radius: 10px; /* Zaokrąglone krawędzie */
+    cursor: pointer;
+    text-decoration: none; /* Usunięcie podkreślenia */
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Płynne przejścia */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2); /* Cień */
+text-align: center;
+}
+
+/* .add-anime-btn:hover { */
+    /* background-color: #d14eea;  */
+    /* transform: scale(1.05);  */
+/* } */
+
+/* Efekt kliknięcia */
+.add-anime-btn:active {
+    transform: scale(0.98); /* Lekkie "wciśnięcie" przy kliknięciu */
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+}
+.back-arrow {
+    display: inline-block;
+    margin-top: 20px;
+    color: #e066ff;
+    font-size: 18px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
