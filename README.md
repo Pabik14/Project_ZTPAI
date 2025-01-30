@@ -88,7 +88,7 @@ Password: 123
 
 ```shell
 Login: test2@test.pl
-Password: he123avy
+Password: 123
 ```
 
 </details>
@@ -108,7 +108,7 @@ Password: he123avy
 - HTML
 - CSS
 - JavaScript
-- python(FLASK)
+- Python(FLASK)
 - PostgreSQL
 
 
