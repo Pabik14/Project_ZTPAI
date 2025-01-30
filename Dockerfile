@@ -9,6 +9,7 @@ COPY requirements.txt .
 
 # Instalujemy zależności
 RUN pip install --no-cache-dir -r requirements.txt
+RUN apt-get update && apt-get install -y postgresql-client
 
 # Kopiujemy resztę aplikacji
 COPY . /app

@@ -3,3 +3,4 @@ psycopg2-binary
 psycopg2
 bcrypt
 pyjwt
+flask-jwt-extended
