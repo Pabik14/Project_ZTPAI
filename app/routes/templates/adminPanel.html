@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Admina</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_style.css') }}">
-
+    <script defer src="{{ url_for('static', filename='js/admin.js') }}"></script>
 </head>
 <body>
     <nav class="navbar">
-   
         <ul id="nav-links">
             <li>
-                <form action="/logout" method="POST">
+                <form action="{{ url_for('auth.logout') }}" method="POST">
                     <button type="submit">Logout</button>
                 </form>
             </li>
@@ -21,12 +20,12 @@
 
     <div class="container">
         <header class="header">
-      <h1>Admin Panel</h1>        </header>
+            <h1>Admin Panel</h1>
+        </header>
 
         <main class="main-content">
             <h2>Users List</h2>
-            <br>
-            <br>
+            <br><br>
             <table>
                 <thead>
                     <tr>
@@ -35,27 +34,28 @@
                         <th>Delete</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php foreach ($users as $user): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($user['name']) ?></td>
-                            <td><?= htmlspecialchars($user['email']) ?></td>
+                <tbody id="user-table-body">
+                    {% for user in users %}
+                        <tr data-user-id="{{ user.id }}">
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
                             <td>
-                                <form action="/deleteUser" method="POST">
-                                    <button type="submit"><img src="public/img/x.png" alt="Usuń" style="width: 20px;"></button>
-                                    <input type="hidden" name="user_id" value="<?= $user['id'] ?>">
-                                </form>
+                                <button class="delete-user">
+                                    <img src="{{ url_for('static', filename='img/x.png') }}" alt="Usuń" style="width: 20px;">
+                                </button>
                             </td>
                         </tr>
-                    <?php endforeach; ?>
+                    {% endfor %}
                 </tbody>
             </table>
-<br>
-            <h2>Download databese</h2>
+
             <br>
-            <form action="/downloadDatabase" method="POST">
-                <button type="submit" >Download</button>
+            <h2>Download Database</h2>
+            <br>
+            <form action="{{ url_for('admin.download_database') }}" method="POST">
+                <button type="submit">Download</button>
             </form>
+            
         </main>
     </div>
 </body>

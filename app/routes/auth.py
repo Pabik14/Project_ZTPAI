@@ -105,9 +105,10 @@ def login():
 
             # Przekierowanie do odpowiedniego panelu
             if role == "admin":
-                return redirect(url_for("views.admin_panel"))
+                return redirect(url_for("admin.admin_panel"))  # ✅ Poprawiona nazwa blueprinta!
             else:
                 return redirect(url_for("views.dashboard"))
+
 
         except Exception as e:
             return render_template("login.html", error=f"Błąd logowania: {str(e)}")

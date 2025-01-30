@@ -1,110 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Dodaj Anime</title>
-		<link rel="stylesheet" href="{{ url_for('static', filename='css/add_style.css') }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dodaj Anime</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/add_style.css') }}">
+    <script defer src="{{ url_for('static', filename='js/menu.js') }}"></script>
+</head>
+<body>
+    <!-- Pasek nawigacyjny -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <button class="burger-menu" id="burger-menu">&#9776;</button>
+        </div>
+        <ul id="nav-links">
+            <li><a href="{{ url_for('views.dashboard') }}">Stats</a></li>
+            <li><a href="{{ url_for('views.anime_list') }}">Anime list</a></li>
+            <li><a href="#">Welcome, {{ session.get('username', 'Guest') }}</a></li>
+            <li>
+                <form action="{{ url_for('auth.logout') }}" method="POST">
+                    <button type="submit">Logout</button>
+                </form>
+            </li>
+        </ul>
+    </nav>
 
-		<script defer src="{{ url_for('static', filename='js/menu.js') }}"></script>
-	</head>
-	<body>
-		<!-- Pasek nawigacyjny -->
-		<nav class="navbar">
-			<div class="navbar-brand">
-				<button class="burger-menu" id="burger-menu">&#9776;</button>
-			</div>
-			<ul id="nav-links">
-				<li><a href="/dashboard">Stats</a></li>
-				<li><a href="/animelist">Anime list</a></li>
-				<li>
-					<a
-						><?php if (isset($userName)): ?>
-						<?= htmlspecialchars($userName) ?>
-						<?php endif; ?></a
-					>
-				</li>
-				<li>
-					<form action="/logout" method="POST">
-						<button type="submit">Logout</button>
-					</form>
-				</li>
-			</ul>
-		</nav>
+    <div class="container">
+        <!-- Nagłówek strony -->
+        <header class="header">
+            <h1>Add New Anime</h1>
+        </header>
 
-		<div class="container">
-			<!-- Nagłówek strony -->
-			<header class="header">
-				<h1>Add New Anime</h1>
-			</header>
+        <!-- Formularz dodawania anime -->
+        <form id="addAnimeForm">
+            <div>
+                <label for="anime_name">Anime Name:</label>
+                <input type="text" id="anime_name" name="anime_name" required />
+            </div>
 
-			<!-- Formularz dodawania anime -->
-			<form action="/addAnime" method="POST">
-				<div>
-					<label for="anime_name">Anime Name:</label>
-					<input type="text" id="anime_name" name="anime_name" required />
-				</div>
+            <div>
+                <label for="category">Category:</label>
+                <select id="category" name="category" required>
+                    {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-				<div>
-					<label for="category">Category:</label>
-					<select id="category" name="category" required>
-						<option value="Akcja">Akcja</option>
-						<option value="Przygodowe">Przygodowe</option>
-						<option value="Horror">Horror</option>
-						<option value="Fantasy">Fantasy</option>
-						<option value="Sci-Fi">Sci-Fi</option>
-						<option value="Komedia">Komedia</option>
-						<option value="Dramat">Dramat</option>
-						<option value="Romans">Romans</option>
-						<option value="Shounen">Shounen</option>
-						<option value="Shoujo">Shoujo</option>
-						<option value="Mecha">Mecha</option>
-						<option value="Slice of Life">Slice of Life</option>
-						<option value="Mystery">Mystery</option>
-						<option value="Thriller">Thriller</option>
-						<option value="Sportowe">Sportowe</option>
-					</select>
-				</div>
+            <div>
+                <label for="type">Type:</label>
+                <select id="type" name="type" required>
+                    {% for type in types %}
+                        <option value="{{ type }}">{{ type }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
+            <div>
+                <label for="status">Status:</label>
+                <select id="status" name="status" required>
+                    {% for status in statuses %}
+                        <option value="{{ status }}">{{ status }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-				<div>
-					<label for="type">Type:</label>
-					<select id="type" name="type" required>
-						<option value="Tv">TV</option>
-						<option value="Movie">Movie</option>
-						<option value="OVA">OVA</option>
-						<option value="Special">Special</option>
-					</select>
-				</div>
+            <div>
+                <label for="episodes_count">Numbers of episode:</label>
+                <input type="number" id="episodes_count" name="episodes_count" min="1" required />
+            </div>
 
-				<div>
-					<label for="status">Status:</label>
-					<select id="status" name="status" required>
-						<option value="watching">Watching</option>
-						<option value="watched">Watched</option>
-						<option value="planned">Planned</option>
-						<option value="on hold">On Hold</option>
-						<option value="abandoned">Abandoned</option>
-					</select>
-				</div>
+            <div class="btn-div">
+                <button class="add-anime-btn" type="submit">Add Anime</button>
+            </div>
+        </form>
+        <div>
+            <a href="{{ url_for('views.anime_list') }}" class="back-arrow">&larr; Back to anime list</a>
+        </div>
+    </div>
 
-				<div>
-					<label for="episodes_count">Numbers of episode:</label>
-					<input
-						type="number"
-						id="episodes_count"
-						name="episodes_count"
-						min="1"
-						required />
-				</div>
-
-				<div class="btn-div">
-					<button class="add-anime-btn" type="submit">Add Anime</button>
-				</div>
-			</form>
-			<div>
-				<a href="/animelist" class="back-arrow">&larr; Back to anime list</a>
-			</div>
-		</div>
-	</body>
+    <script>
+        document.getElementById("addAnimeForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            let formData = new FormData(this);
+            
+            fetch("{{ url_for('views.add_anime') }}", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                    window.location.href = "{{ url_for('views.anime_list') }}";
+              
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+</body>
 </html>

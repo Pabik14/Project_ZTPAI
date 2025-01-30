@@ -1,58 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Anime Tracker - Stats</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Tracker - Stats</title>
 
-			<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard_style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard_style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Pasek nawigacyjny -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <button class="burger-menu" id="burger-menu">&#9776;</button>
+        </div>
+        <ul id="nav-links">
+            <li><a href="{{ url_for('views.dashboard') }}">Stats</a></li>
+            <li><a href="{{ url_for('views.anime_list') }}">Anime list</a></li>
+            <li><a href="#">{{ username }}</a></li>
+            <li>
+                <form action="{{ url_for('auth.logout') }}" method="POST">
+                    <button type="submit">Logout</button>
+                </form>
+            </li>
+        </ul>
+    </nav>
 
-		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-		<script defer src="{{ url_for('static', filename='js/menu.js') }}"></script>
+    <div class="container">
+        <!-- Nagłówek strony -->
+        <header class="header">
+            <h1>Anime Stats</h1>
+        </header>
 
-		<script defer src="public/js/dashboard.js"></script>
-	</head>
-	<body>
-		<!-- Pasek nawigacyjny -->
-		<nav class="navbar">
-			<div class="navbar-brand">
-				<button class="burger-menu" id="burger-menu">&#9776;</button>
-			</div>
-			<ul id="nav-links">
-				<li><a href="/dashboard">Stats</a></li>
-				<li><a href="/animelist">Anime list</a></li>
-				<li>
-					<a
-						><?php if (isset($userName)): ?>
-						<?= htmlspecialchars($userName) ?>
-						<?php endif; ?></a
-					>
-				</li>
-				<li>
-					<form action="/logout" method="POST">
-						<button type="submit">Logout</button>
-					</form>
-				</li>
-			</ul>
-		</nav>
+        <!-- Główna treść strony - Statystyki -->
+        <main class="main-content">
+            <h2>Your Anime Stats</h2>
+            <!-- Wykresy -->
+            <div class="chart-container">
+                <canvas id="animeStatusChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="animeTypeChart"></canvas>
+            </div>
+        </main>
+    </div>
 
-		<div class="container">
-			<!-- Nagłówek strony -->
-			<header class="header">
-				<h1>Anime Stats</h1>
-			</header>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let statusData = {{ status_counts | tojson }};
+            let typeData = {{ type_counts | tojson }};
 
-			<!-- Główna treść strony - Statystyki -->
-			<main class="main-content">
-				<h2>Your Anime Stats</h2>
-				<!-- Wykresy -->
-				<div class="chart-container">
-					<canvas id="animeStatusChart"></canvas>
-				</div>
-				<div class="chart-container">
-					<canvas id="animeTypeChart"></canvas>
-				</div>
-			</main>
-		</div>
-	</body>
+            renderStatusChart(statusData);
+            renderTypeChart(typeData);
+        });
+
+        function renderStatusChart(statusData) {
+            const ctx = document.getElementById("animeStatusChart").getContext("2d");
+            new Chart(ctx, {
+                type: "pie",
+                data: {
+                    labels: Object.keys(statusData),
+                    datasets: [{
+                        label: "Anime by Status",
+                        data: Object.values(statusData),
+                        backgroundColor: ["#ff6384", "#36a2eb", "#ffce56", "#4bc0c0", "#9966ff"]
+                    }]
+                }
+            });
+        }
+
+        function renderTypeChart(typeData) {
+            const ctx = document.getElementById("animeTypeChart").getContext("2d");
+            new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: Object.keys(typeData),
+                    datasets: [{
+                        label: "Anime by Type",
+                        data: Object.values(typeData),
+                        backgroundColor: ["#ff6384", "#36a2eb", "#ffce56", "#4bc0c0"]
+                    }]
+                }
+            });
+        }
+    </script>
+</body>
 </html>

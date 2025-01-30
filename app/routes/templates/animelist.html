@@ -39,16 +39,16 @@
 
     <!-- Pole wyszukiwania -->
     <div class="search-container">
-        <input type="text" id="search-input" placeholder="Search anime...">
-        <select id="status-filter">
+        <input type="text" id="search-input" placeholder="Search anime..." onkeyup="filterAnime()">
+        <select id="status-filter" onchange="filterAnime()">
             <option value="">All Anime</option>
-            <option value="watching">Watching</option>
-            <option value="watched">Watched</option>
-            <option value="planned">Planned</option>
-            <option value="on hold">On Hold</option>
-            <option value="abandoned">Abandoned</option>
+            <option value="Watching">Watching</option>
+            <option value="Watched">Watched</option>
+            <option value="Planned">Planned</option>
+            <option value="On Hold">On Hold</option>
+            <option value="Abandoned">Abandoned</option>
         </select>
-        <button id="reset-search">Reset</button>
+        <button id="reset-search" onclick="resetFilters()">Reset</button>
     </div>
   
     <a href="{{ url_for('views.add_anime') }}">
@@ -71,31 +71,90 @@
             <tbody id="anime-table-body">
                 {% if anime_list %}
                     {% for anime in anime_list %}
-                        <tr>
+                        <tr id="anime-row-{{ anime.id }}">
                             <td>{{ anime.anime_name }}</td>
                             <td>{{ anime.category }}</td>
                             <td>{{ anime.type }}</td>
                             <td>{{ anime.status }}</td>
                             <td>{{ anime.episodes_count }}</td>
                             <td>
-                                <img 
-                                    src="{{ url_for('static', filename='img/x.png') }}" 
-                                    alt="Delete" 
-                                    class="delete-anime x-delete" 
-                                    data-anime-id="{{ anime.id }}"
-                                >
+                                <button class="delete-anime" onclick="deleteAnime({{ anime.id }})">
+                                    <img 
+                                        src="{{ url_for('static', filename='img/x.png') }}" 
+                                        alt="Delete" 
+                                        class="x-delete"
+                                    >
+                                </button>
                             </td>
                         </tr>
                     {% endfor %}
                 {% else %}
-                    <!-- Komunikat, gdy lista anime jest pusta -->
                     <tr>
                         <td colspan="6">No anime found in your list.</td>
                     </tr>
                 {% endif %}
             </tbody>
+            
+            
         </table>
     </main>
 </div>
+
+<script>
+    function filterAnime() {
+        let searchValue = document.getElementById("search-input").value.toLowerCase();
+        let statusValue = document.getElementById("status-filter").value.toLowerCase();
+        let rows = document.querySelectorAll("#anime-table-body tr");
+
+        rows.forEach(row => {
+            let title = row.cells[0].innerText.toLowerCase();
+            let status = row.cells[3].innerText.toLowerCase();
+
+            let matchesSearch = title.includes(searchValue);
+            let matchesStatus = statusValue === "" || status.includes(statusValue);
+
+            if (matchesSearch && matchesStatus) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+
+    function resetFilters() {
+        document.getElementById("search-input").value = "";
+        document.getElementById("status-filter").value = "";
+        filterAnime();
+    }
+
+    function deleteAnime(animeId) {
+
+
+        fetch(`/delete_anime/${animeId}`, {
+            method: "DELETE"
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                let row = document.getElementById(`anime-row-${animeId}`);
+                row.remove();
+
+                // Sprawdzenie, czy tabela jest pusta
+                let tableBody = document.getElementById("anime-table-body");
+                if (tableBody.children.length === 0) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="6">No anime found in your list.</td>
+                        </tr>
+                    `;
+                }
+            } else {
+                alert("Error deleting anime: " + data.error);
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    }
+</script>
+
 </body>
 </html>
