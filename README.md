@@ -27,35 +27,11 @@ docker-compose up --build
 ```
 ### 3. Import database
 
-To import database you need to go to pgAdmin website under this URL:
+To import database you need to go to website under this URL:
 ```shell
-http://localhost:5050/
+http://localhost:5000/
 ```
-Then you need to log in using this login and password
-<details>
-  <summary>Login data</summary>
-
-```shell
-admin@example.com
-admin
-```
-</details>
-
-<br>
-Next step is to connect your database using these login details
-<br>
-<br>
-<details>
-  <summary>Login data</summary>
-
-```shell
-docker
-docker
-```
-</details>
-<br>
-
-The last step is to enter the ready commands to create the table, copy and paste them into the query tool and run which are available at this [link](https://github.com/Pabik14/Project_WdPAI_AT/blob/master/public/backup/backup.sql).
+There you will have a button thanks to which you will be able to load the database and test users.
 
 ### 4. Logging in:
 
@@ -96,8 +72,7 @@ Password: 123
 ## Database
 
 ### Diagram ERD 
-![ERD Diagram](https://i.imgur.com/vgNfAQj.png)
-
+![ERD Diagram](https://i.imgur.com/CvE8QCR.png)
 
 
 
