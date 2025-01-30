@@ -1,39 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anime Tracker - Log in</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login_style.css') }}">
-</head>
-<body>
-    <div class="container">
-        <header class="header">
-            <h1>ANIME TRACKER</h1>
-        </header>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Anime Tracker - Log in</title>
+		<link
+			rel="stylesheet"
+			href="{{ url_for('static', filename='css/login_style.css') }}" />
+            <script defer src="{{ url_for('static', filename='js/login.js') }}"></script>
 
-        <main class="main-content">
-            <form class="login-form" action="/login" method="POST">
-                <h2>Log in</h2>
-                <div class="input-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="input-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <button type="submit" class="button">Log in</button>
-            </form>
-                 <?php if (isset($error)): ?>
-            <div class="error"><?= htmlspecialchars($error) ?></div>
-                 <?php endif; ?>
-            <a href="home" class="back-arrow">
-                &larr; Back
-            </a>
-        </main>
-    </div>
-    <script src="/public/js/login.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<header class="header">
+				<h1>ANIME TRACKER</h1>
+			</header>
 
-</body>
+			<main class="main-content">
+                <form class="login-form" id="loginForm" data-login-url="{{ url_for('auth.login') }}">
+					<h2>Log in</h2>
+					<div class="input-group">
+						<label for="email">Email</label>
+						<input type="email" id="email" name="email" required />
+					</div>
+					<div class="input-group">
+						<label for="password">Password</label>
+						<input type="password" id="password" name="password" required />
+					</div>
+					<button type="submit" class="button">Log in</button>
+				</form>
+				<div id="error-message">{% if error %}{{ error }}{% endif %}</div>
+				<a href="{{ url_for('views.home') }}" class="back-arrow">&larr; Back</a>
+			</main>
+		</div>
+
+
+	</body>
 </html>

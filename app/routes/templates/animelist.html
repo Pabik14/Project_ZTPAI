@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anime Tracker - Anime List</title>
-    <link rel="stylesheet" type="text/css" href="public/css/animelist_style.css">   
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script defer src="public/js/menu.js" defer></script>
-    <script defer src="public/js/search.js" defer></script>
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animelist_style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="{{ url_for('static', filename='js/menu.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='js/search.js') }}"></script>
 </head>
 <body>
    <!-- Pasek nawigacyjny -->
@@ -19,20 +20,17 @@
         </button>
     </div>
     <ul id="nav-links">
-        <li><a href="/dashboard">Stats</a></li>
-        <li><a href="/animelist">Anime list</a></li>
-
-        <li><a><?php if (isset($userName)): ?>
-            <?= htmlspecialchars($userName) ?>
-            <?php endif; ?></a></li>
+        <li><a href="{{ url_for('views.dashboard') }}">Stats</a></li>
+        <li><a href="{{ url_for('views.anime_list') }}">Anime list</a></li>
+        <li><a href="#">{{ session.get('username', 'Guest') }}</a></li>
         <li>
-            <form action="/logout" method="POST">
+            <form action="{{ url_for('auth.logout') }}" method="POST">
                 <button type="submit">Logout</button>
-
             </form>
-            </li>
+        </li>
     </ul>
 </nav>
+
 <div class="container">
     <!-- Nagłówek strony -->
     <header class="header">
@@ -51,15 +49,11 @@
             <option value="abandoned">Abandoned</option>
         </select>
         <button id="reset-search">Reset</button>
-        
     </div>
   
-    <a href="/addAnime">
-    <button class="add-anime-btn" >
-            Add Anime
-        </button>
+    <a href="{{ url_for('views.add_anime') }}">
+        <button class="add-anime-btn">Add Anime</button>
     </a>
-
 
     <!-- Główna treść strony - lista anime -->
     <main class="main-content">
@@ -75,36 +69,33 @@
                 </tr>
             </thead>
             <tbody id="anime-table-body">
-                <!-- Iteruj przez każdy element listy anime i wyświetl dane -->
-                <?php if (isset($animeList) && !empty($animeList)): ?>
-                    <?php foreach ($animeList as $anime): ?>
+                {% if anime_list %}
+                    {% for anime in anime_list %}
                         <tr>
-                            <td><?= htmlspecialchars($anime['anime_name']) ?></td>
-                            <td><?= htmlspecialchars($anime['category']) ?></td>
-                            <td><?= htmlspecialchars($anime['type']) ?></td>
-                            <td><?= htmlspecialchars($anime['status']) ?></td>
-                            <td><?= htmlspecialchars($anime['episodes_count']) ?></td>
+                            <td>{{ anime.anime_name }}</td>
+                            <td>{{ anime.category }}</td>
+                            <td>{{ anime.type }}</td>
+                            <td>{{ anime.status }}</td>
+                            <td>{{ anime.episodes_count }}</td>
                             <td>
                                 <img 
-                                    src="public/img/x.png" 
+                                    src="{{ url_for('static', filename='img/x.png') }}" 
                                     alt="Delete" 
                                     class="delete-anime x-delete" 
-                                    data-anime-id="<?= htmlspecialchars($anime['id']) ?>" 
-                                ></td>
-                            
+                                    data-anime-id="{{ anime.id }}"
+                                >
+                            </td>
                         </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
+                    {% endfor %}
+                {% else %}
                     <!-- Komunikat, gdy lista anime jest pusta -->
                     <tr>
                         <td colspan="6">No anime found in your list.</td>
                     </tr>
-                <?php endif; ?>
+                {% endif %}
             </tbody>
         </table>
     </main>
 </div>
-
-
 </body>
 </html>

@@ -4,12 +4,12 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Anime Tracker - Stats</title>
-		<link
-			rel="stylesheet"
-			type="text/css"
-			href="public/css/dashboard_style.css" />
+
+			<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard_style.css') }}">
+
 		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-		<script defer src="public/js/menu.js"></script>
+		<script defer src="{{ url_for('static', filename='js/menu.js') }}"></script>
+
 		<script defer src="public/js/dashboard.js"></script>
 	</head>
 	<body>

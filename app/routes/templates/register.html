@@ -4,23 +4,23 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Anime Tracker - Register</title>
+
 		<link
 			rel="stylesheet"
-			type="text/css"
-			href="public/css/register_style.css" />
+			href="{{ url_for('static', filename='css/register_style.css') }}" />
+			<script defer src="{{ url_for('static', filename='js/register.js') }}"></script>
+
 	</head>
 	<body>
 		<div class="container">
-			<!-- Nagłówek strony -->
 			<header class="header">
 				<h1>ANIME TRACKER</h1>
 			</header>
 
-			<!-- Główna treść strony - formularz rejestracji -->
 			<main class="main-content">
 				<form
 					class="register-form"
-					action="/register"
+					action="{{ url_for('auth.register') }}"
 					method="POST">
 					<h2>Register</h2>
 					<div class="input-group">
@@ -36,7 +36,7 @@
 						<input type="password" id="password" name="password" required />
 					</div>
 					<div class="input-group">
-						<label for="confirm-password">Confirm Password</label>
+						<label for="confirm_password">Confirm Password</label>
 						<input
 							type="password"
 							id="confirm_password"
@@ -45,11 +45,15 @@
 					</div>
 					<button type="submit" class="button">Sign up</button>
 				</form>
-				<?php if (isset($error)): ?>
-				<div class="error"><?= htmlspecialchars($error) ?></div>
-			<?php endif; ?>
-				<a href="home" class="back-arrow"> &larr; Back </a>
+
+				{% if error %}
+				<div class="error">{{ error }}</div>
+				{% endif %}
+
+				<a href="{{ url_for('views.home') }}" class="back-arrow">&larr; Back</a>
 			</main>
 		</div>
+
+		
 	</body>
 </html>
