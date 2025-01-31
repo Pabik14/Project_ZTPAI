@@ -4,3 +4,6 @@ psycopg2
 bcrypt
 pyjwt
 flask-jwt-extended
+flask-sqlalchemy
+flask-migrate
+flask-jwt-extended

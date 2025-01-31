@@ -27,11 +27,7 @@ docker-compose up --build
 ```
 ### 3. Import database
 
-To import database you need to go to website under this URL:
-```shell
-http://localhost:5000/
-```
-There you will have a button thanks to which you will be able to load the database and test users.
+The database is imported automatically after starting the Docker containers.
 
 ### 4. Logging in:
 
