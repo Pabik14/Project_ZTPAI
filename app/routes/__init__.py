@@ -12,7 +12,7 @@ from flask_restx import Api
 def create_app():
     app = Flask(__name__, template_folder="templates")
     app.secret_key = "supersecretkey"
-    app.config["RESTX_MASK_SWAGGER"] = False  # Wyłącza maskowanie pól w Swagger UI
+    app.config["RESTX_MASK_SWAGGER"] = False  
 
     api = Api(app, version="1.0", title="Anime Tracker API", description="API do zarządzania anime", doc="/swagger")
     # Inicjalizacja bazy danych
@@ -23,10 +23,10 @@ def create_app():
          insert_static_data()
          insert_users()
         # Konfiguracja JWT
-    app.config["JWT_SECRET_KEY"] = "supersecretjwtkey"  # Użyj bardziej bezpiecznego klucza!
-    jwt = JWTManager(app)  # 🔥 To jest najważniejsze!
+    app.config["JWT_SECRET_KEY"] = "supersecretjwtkey" 
+    jwt = JWTManager(app) 
     app.register_blueprint(views_bp)
     app.register_blueprint(auth_bp)
-    api.add_namespace(api_ns, path="/api")  # 
-    app.register_blueprint(admin_bp)  # ✅ Rejestrujemy admina
+    api.add_namespace(api_ns, path="/api")  # api
+    app.register_blueprint(admin_bp)  #rejestrujemy admina
     return app

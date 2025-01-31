@@ -40,8 +40,8 @@ services:
     image: "rabbitmq:3-management"
     container_name: "rabbitmq"
     ports:
-      - "5672:5672"  # Port do komunikacji aplikacji z RabbitMQ
-      - "15672:15672"  # Panel zarządzania RabbitMQ
+      - "5672:5672"  
+      - "15672:15672"  
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
@@ -50,9 +50,9 @@ services:
 
   worker:
     build: .
-    command: python worker.py  # ✅ Uruchamiamy worker.py z katalogu głównego
+    command: python worker.py  
     volumes:
-      - .:/app  # ✅ Upewniamy się, że cały projekt jest dostępny w /app/
+      - .:/app  
     depends_on:
       - rabbitmq
       - db

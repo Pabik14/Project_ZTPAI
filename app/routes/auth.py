@@ -22,7 +22,7 @@ def check_password(password, hashed_password):
     try:
         return bcrypt.checkpw(password.encode(), hashed_password.encode())
     except ValueError:
-        print("❌ Błąd: Hasło w bazie nie jest poprawnie zahashowane!")
+        print("Błąd: Hasło w bazie nie jest poprawnie zahashowane!")
         return False
 
 def send_to_queue(email, username):
@@ -47,11 +47,11 @@ def send_to_queue(email, username):
             )
         )
 
-        print(f"📩 Zadanie wysyłki e-maila dla {email} wysłane do RabbitMQ")
+        print(f"Zadanie wysyłki e-maila dla {email} wysłane do RabbitMQ")
         connection.close()
     
     except Exception as e:
-        print(f"❌ Błąd wysyłania wiadomości do RabbitMQ: {e}")
+        print(f"Błąd wysyłania wiadomości do RabbitMQ: {e}")
 
 
 @auth_bp.route("/register", methods=["GET", "POST"])
@@ -74,7 +74,7 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
-        print("✅ Rejestracja udana! Przekierowanie na logowanie.")
+        print("Rejestracja udana! Przekierowanie na logowanie.")
         return redirect(url_for("auth.login"))
 
     return render_template("register.html")
@@ -106,7 +106,7 @@ def login():
         session["role"] = role
         session["token"] = token
     
-        print(f"✅ Logowanie udane! Rola: {role}")
+        print(f"Logowanie udane! Rola: {role}")
         send_to_queue(user.email, user.name)
 
         # Przekierowanie do odpowiedniego panelu

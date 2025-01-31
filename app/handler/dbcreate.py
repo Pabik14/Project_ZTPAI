@@ -12,7 +12,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "postgresql://
 
 db = SQLAlchemy(app)
 
-# MODELE ORM
+
 class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
@@ -50,7 +50,6 @@ class Anime(db.Model):
     type = db.relationship("Type", backref="anime_list")
     status = db.relationship("Status", backref="anime_list")
 
-# FUNKCJE POMOCNICZE
 def hash_password(password):
     """Zwraca zahashowane hasło"""
     return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
@@ -76,7 +75,7 @@ def insert_static_data():
             db.session.add(Status(name=name))
 
     db.session.commit()
-    print("✅ Domyślne dane dodane!")
+    print("Domyślne dane dodane!")
 
 def insert_users():
     """Dodaje domyślnych użytkowników do bazy"""
@@ -91,5 +90,5 @@ def insert_users():
             db.session.add(User(name=name, email=email, password=password))
     
     db.session.commit()
-    print("✅ Domyślni użytkownicy zostali dodani!")
+    print("Domyślni użytkownicy zostali dodani!")
 
