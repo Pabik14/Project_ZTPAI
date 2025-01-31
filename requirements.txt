@@ -7,3 +7,5 @@ flask-jwt-extended
 flask-sqlalchemy
 flask-migrate
 flask-jwt-extended
+pika
+flask-restx

@@ -2,6 +2,8 @@ import os
 import bcrypt
 import jwt
 import datetime
+import pika
+import json
 from flask import Blueprint, request, render_template, redirect, url_for, session, jsonify
 from app.handler.dbcreate import db
 from app.handler.dbcreate import User
@@ -22,6 +24,35 @@ def check_password(password, hashed_password):
     except ValueError:
         print("❌ Błąd: Hasło w bazie nie jest poprawnie zahashowane!")
         return False
+
+def send_to_queue(email, username):
+    """Dodaje zadanie wysyłki e-maila do kolejki RabbitMQ"""
+    RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", "rabbitmq")  # Pobiera host z ENV
+
+    try:
+        connection = pika.BlockingConnection(pika.ConnectionParameters(RABBITMQ_HOST))
+        channel = connection.channel()
+
+        # Tworzymy trwałą kolejkę
+        channel.queue_declare(queue="email_queue", durable=True)
+
+        # Wysyłamy wiadomość do kolejki w formacie JSON
+        message = json.dumps({"email": email, "username": username})
+        channel.basic_publish(
+            exchange="",
+            routing_key="email_queue",
+            body=message,
+            properties=pika.BasicProperties(
+                delivery_mode=2  # Zapewnia, że wiadomość przetrwa restart RabbitMQ
+            )
+        )
+
+        print(f"📩 Zadanie wysyłki e-maila dla {email} wysłane do RabbitMQ")
+        connection.close()
+    
+    except Exception as e:
+        print(f"❌ Błąd wysyłania wiadomości do RabbitMQ: {e}")
+
 
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
@@ -76,6 +107,7 @@ def login():
         session["token"] = token
     
         print(f"✅ Logowanie udane! Rola: {role}")
+        send_to_queue(user.email, user.name)
 
         # Przekierowanie do odpowiedniego panelu
         if role == "admin":
@@ -85,8 +117,9 @@ def login():
 
     return render_template("login.html")
 
-@auth_bp.route("/logout", methods=["POST"])
+@auth_bp.route("/logout", methods=["GET", "POST"])
 def logout():
     """Wylogowanie użytkownika i przekierowanie na stronę główną"""
     session.clear()
     return redirect(url_for("views.home"))
+
