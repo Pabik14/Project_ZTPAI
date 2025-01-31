@@ -70,7 +70,10 @@ Password: 123
 ### Diagram ERD 
 ![ERD Diagram](https://i.imgur.com/CvE8QCR.png)
 
+## REST API
 
+### Dokumentacja Swagger 
+![ERD Diagram](https://i.imgur.com/a3vVEKO.png)
 
 ## Technologies used
 - Git
