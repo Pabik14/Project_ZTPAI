@@ -1,19 +1,18 @@
 import os
-import psycopg2
 import bcrypt
 import jwt
 import datetime
 from flask import Blueprint, request, render_template, redirect, url_for, session, jsonify
+from app.handler.dbcreate import db
+from app.handler.dbcreate import User
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, set_access_cookies
 
 auth_bp = Blueprint("auth", __name__)
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://anime_user:anime_password@db/anime_db")
 SECRET_KEY = os.getenv("SECRET_KEY", "supersecretkey")
 
-def get_db_connection():
-    return psycopg2.connect(DATABASE_URL)
-
 def hash_password(password):
+    """Zwraca zahashowane hasło"""
     return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
 def check_password(password, hashed_password):
@@ -24,43 +23,28 @@ def check_password(password, hashed_password):
         print("❌ Błąd: Hasło w bazie nie jest poprawnie zahashowane!")
         return False
 
-
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     """Obsługuje rejestrację użytkownika"""
     if request.method == "POST":
-        try:
-            name = request.form.get("name")
-            email = request.form.get("email")
-            password = request.form.get("password")
-            confirm_password = request.form.get("confirm_password")
+        name = request.form.get("name")
+        email = request.form.get("email")
+        password = request.form.get("password")
+        confirm_password = request.form.get("confirm_password")
 
-            if not name or not email or not password or password != confirm_password:
-                return render_template("register.html", error="Błąd: Wszystkie pola są wymagane i hasła muszą się zgadzać!")
+        if not name or not email or not password or password != confirm_password:
+            return render_template("register.html", error="Błąd: Wszystkie pola są wymagane i hasła muszą się zgadzać!")
 
-            hashed_password = hash_password(password)
+        if User.query.filter_by(email=email).first():
+            return render_template("register.html", error="Użytkownik o tym e-mailu już istnieje!")
 
-            conn = get_db_connection()
-            cur = conn.cursor()
+        hashed_password = hash_password(password)
+        new_user = User(name=name, email=email, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
 
-            cur.execute(
-                "INSERT INTO users (name, email, password) VALUES (%s, %s, %s) ON CONFLICT (email) DO NOTHING RETURNING id",
-                (name, email, hashed_password),
-            )
-            user_id = cur.fetchone()
-            conn.commit()
-            cur.close()
-            conn.close()
-
-            if not user_id:
-                return render_template("register.html", error="Użytkownik o tym e-mailu już istnieje!")
-
-            print("✅ Rejestracja udana! Przekierowanie na logowanie.")
-            return redirect(url_for("auth.login"))
-
-        except Exception as e:
-            print(f"❌ Błąd rejestracji: {str(e)}")
-            return render_template("register.html", error=f"Błąd: {str(e)}")
+        print("✅ Rejestracja udana! Przekierowanie na logowanie.")
+        return redirect(url_for("auth.login"))
 
     return render_template("register.html")
 
@@ -74,44 +58,30 @@ def login():
         if not email or not password:
             return render_template("login.html", error="Wszystkie pola są wymagane!")
 
-        try:
-            conn = get_db_connection()
-            cur = conn.cursor()
-            cur.execute("SELECT id, name, email, password FROM users WHERE email = %s", (email,))
-            user = cur.fetchone()
-            cur.close()
-            conn.close()
+        user = User.query.filter_by(email=email).first()
 
-            if not user or not check_password(password, user[3]):
-                return render_template("login.html", error="Nieprawidłowy e-mail lub hasło!")
+        if not user or not check_password(password, user.password):
+            return render_template("login.html", error="Nieprawidłowy e-mail lub hasło!")
 
-            # Określenie roli użytkownika
-            role = "admin" if user[2] == "admin@admin.pl" else "user"
+        # Określenie roli użytkownika
+        role = "admin" if user.email == "admin@admin.pl" else "user"
 
-            # Tworzymy token JWT
-            token = jwt.encode(
-                {"user_id": user[0], "role": role, "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=24)},
-                SECRET_KEY,
-                algorithm="HS256"
-            )
+        # Tworzymy token JWT
+        token = create_access_token(identity={"user_id": user.id, "role": role})
 
-            # Zapisujemy dane użytkownika w sesji
-            session["user_id"] = user[0]
-            session["username"] = user[1]
-            session["role"] = role
-            session["token"] = token
+        # Zapisujemy dane użytkownika w sesji
+        session["user_id"] = user.id
+        session["username"] = user.name
+        session["role"] = role
+        session["token"] = token
+    
+        print(f"✅ Logowanie udane! Rola: {role}")
 
-            print(f"✅ Logowanie udane! Rola: {role}")
-
-            # Przekierowanie do odpowiedniego panelu
-            if role == "admin":
-                return redirect(url_for("admin.admin_panel"))  # ✅ Poprawiona nazwa blueprinta!
-            else:
-                return redirect(url_for("views.dashboard"))
-
-
-        except Exception as e:
-            return render_template("login.html", error=f"Błąd logowania: {str(e)}")
+        # Przekierowanie do odpowiedniego panelu
+        if role == "admin":
+            return redirect(url_for("admin.admin_panel"))  
+        else:
+            return redirect(url_for("views.dashboard"))
 
     return render_template("login.html")
 
@@ -120,4 +90,3 @@ def logout():
     """Wylogowanie użytkownika i przekierowanie na stronę główną"""
     session.clear()
     return redirect(url_for("views.home"))
-

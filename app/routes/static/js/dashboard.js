@@ -1,16 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
-    fetchAnimeStats();
-});
+    let statusData = {{ status_counts | tojson }};
+    let typeData = {{ type_counts | tojson }};
 
-function fetchAnimeStats() {
-    fetch("/api/anime-stats")
-        .then(response => response.json())
-        .then(data => {
-            renderStatusChart(data.status_counts);
-            renderTypeChart(data.type_counts);
-        })
-        .catch(error => console.error("Error fetching anime stats:", error));
-}
+    renderStatusChart(statusData);
+    renderTypeChart(typeData);
+});
 
 function renderStatusChart(statusData) {
     const ctx = document.getElementById("animeStatusChart").getContext("2d");
